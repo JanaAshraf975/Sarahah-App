@@ -5,7 +5,7 @@ const envPath = {
   development: "dev.env",
   production: "prod.env",
 };
-
+//path:path.resolve
 dotenv.config({ path: resolve(`./config/${envPath.development}`) });
 
 export const PORT = process.env.PORT || 3000;
