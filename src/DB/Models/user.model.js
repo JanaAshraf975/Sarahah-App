@@ -47,11 +47,11 @@ const userSchema= new mongoose.Schema(
 
     },{
         timestamps:true,toObject:{virtuals:true},toJSON:{virtuals:true}
- ```js
-// toObject: Converts the Mongoose document into a normal JavaScript object.
+//  ```js
+// // toObject: Converts the Mongoose document into a normal JavaScript object.
 
-// toJSON: Converts the Mongoose document into JSON when sending a response.
-```
+// // toJSON: Converts the Mongoose document into JSON when sending a response.
+// ```
 
     }
 
