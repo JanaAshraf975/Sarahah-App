@@ -5,6 +5,7 @@ import { BadRequestException, conflictException, NotFoundException } from "../..
 import { encryption } from "../../Utils/secuirty/enc.secuirty.js";
 import { compareHash, generateHash } from "../../Utils/secuirty/hash.secuirty.js";
 import SuccessResponse from "../../Utils/response/success.response.js";
+import { getLoginCredentials } from "../../Utils/tokens/token.js";
 
 
 export const signUp = async (req, res) => {
@@ -53,5 +54,39 @@ export const signUp = async (req, res) => {
 
 
 
+export const login = async (req, res) => {
+  const { email, password } = req.body;
 
+  const user = await findOne({
+    model: userModel,
+    filter: { email },
+  });
+
+  if (!user) {
+    throw NotFoundException({
+      message: "Email not found!",
+    });
+  }
+
+  const isMatch = await compareHash({
+    plaintext: password,
+    hashedText: user.password,
+    algorithm: hashEnums.BCRYPT,
+  });
+
+  if (!isMatch) {
+    throw BadRequestException({
+      message: "Invalid password!",
+    });
+  }
+
+  const token = await getLoginCredentials(user);
+
+  return SuccessResponse({
+    res,
+    status: 200,
+    message: "Login successfully",
+    data: { token },
+  });
+}; 
 
